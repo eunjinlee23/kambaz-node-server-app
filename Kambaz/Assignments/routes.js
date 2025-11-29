@@ -1,28 +1,28 @@
 import AssignmentDao from "./dao.js";
 export default function AssignmentRoutes(app, db) {
     const dao = AssignmentDao(db);
-    const findAssignmentsForCourse = (req, res) => {
+    const findAssignmentsForCourse = async (req, res) => {
         const { courseId } = req.params;
-        const assignments = dao.findAssignmentsForCourse(courseId);
+        const assignments = await dao.findAssignmentsForCourse(courseId);
         res.json(assignments);
     }
 
-    const findAssignmentById = (req, res) => {
+    const findAssignmentById = async (req, res) => {
         const { assignmentId } = req.params;
-        const assignment = dao.findAssignmentById(assignmentId);
+        const assignment = await dao.findAssignmentById(assignmentId);
         res.send(assignment);
     }
 
-    const createAssignmentForCourse = (req, res) => {
+    const createAssignmentForCourse = async (req, res) => {
         const { courseId } = req.params;
         const assignment = { ...req.body, course: courseId};
-        const newAssignment = dao.createAssignment(assignment);
+        const newAssignment = dao.createAssignment(courseId, assignment);
         res.send(newAssignment);
     }
 
-    const deleteAssignment = (req, res) => {
-        const { assignmentId } = req.params;
-        const status = dao.deleteAssignment(assignmentId);
+    const deleteAssignment = async (req, res) => {
+        const { courseId, assignmentId } = req.params;
+        const status = await dao.deleteAssignment(courseId, assignmentId);
         res.send(status);
     }
 
@@ -36,7 +36,7 @@ export default function AssignmentRoutes(app, db) {
 
     app.put("/api/assignments/:assignmentId", updateAssignment);
     app.get("/api/assignments/:assignmentId", findAssignmentById)
-    app.delete("/api/assignments/:assignmentId", deleteAssignment);
+    app.delete("/api/courses/:courseId/assignments/:assignmentId", deleteAssignment);
     app.post("/api/courses/:courseId/assignments", createAssignmentForCourse);
     app.get("/api/courses/:courseId/assignments", findAssignmentsForCourse);
 }
