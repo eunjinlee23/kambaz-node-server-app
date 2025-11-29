@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import moduleSchema from "../Modules/schema.js"; 
+import assignmentSchema from "../Assignments/schema.js";
 const courseSchema = new mongoose.Schema({
     _id: String,
     name: String,
@@ -8,7 +9,7 @@ const courseSchema = new mongoose.Schema({
     image: String,
     description: String,
     modules: [moduleSchema],
-    assignments: [String],
+    assignments: [assignmentSchema],
 },
 { collection: "courses" }
 );
