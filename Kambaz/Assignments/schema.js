@@ -5,9 +5,9 @@ const schema = new mongoose.Schema(
         title: String,
         course: String, 
         points: Number,
-        available: String,
-        due: String,
-        until: String,
+        available: Date,
+        due: Date,
+        until: Date,
         description: String,
     },
 );
